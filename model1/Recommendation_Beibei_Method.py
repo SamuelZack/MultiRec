@@ -1,14 +1,3 @@
-import sys
-from Recommendation_Beibei_Model import Crop, Mask, Args
-import numpy as np
-from collections import defaultdict
-import copy
-import tensorflow as tf
-
-tf.compat.v1.disable_eager_execution()
-tf.random.set_seed(42)
-
-
 def sample_function(user_train, Beh, Beh_w, Behaviors, usernum, itemnum, batch_size, maxlen, result_queue, SEED):
     def sample():
         recency_alpha = 0.7
@@ -495,19 +484,6 @@ def data_partition_yelp(fname):
             seq_Beh[user] = truncated_beh_list
             User_weights[user] = truncated_weights_list
             Behaviors[user] = truncated_behaviors_list
-            # user_train[user] = [value for value in truncated_item_list if value != last_item]
-            # user_train[user] = [value for value in truncated_item_list]
-
-            # truncated_beh_list = items_beh_list[:last_item_indx]
-            # seq_Beh[user] = [value for value in truncated_beh_list]
-
-            # truncated_weights_list = items_weight_list[:last_item_indx]
-            # User_weights[user] = [value for value in truncated_weights_list]
-
-            # print('len of seq.....', len(user_train[user]))
-            # print('len of seq beh.....', len(seq_Beh[user]))
-            # print('len of seq weights.....', len(User_weights[user]))
-            # print('=================================================')
             user_valid[user] = []
             user_valid[user].append(last_item)
             user_valid_beh[user] = []
@@ -607,8 +583,6 @@ def evaluate_valid(model, dataset, args, sess, Beh, epoch):
             seq_len -= 1
             if idx == -1: break
 
-        # for i in seq :
-        #    seq_cxt.append(Beh[(u,i)])
 
         seq_len_cxt = len(train[u]) - 1
         for i in seq:  # add the seq behaviours
